@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.2.1/css/all.css">
+
+    <title>Online Voting</title>
+</head>
+
+<body>
+
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">Voting</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="./dashboard.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="./election.html">
+                    <i class='bx bxs-book-add'></i>
+                    <span class="text">Add Election</span>
+                </a>
+            </li>
+            <li>
+                <a href="./candidate.html">
+                    <i class='bx bxs-user-plus'></i>
+                    <span class="text">Add Candidate</span>
+                </a>
+            </li>
+            <li>
+                <a href="./voters.html">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">View Voters</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="./results.html">
+                    <i class='bx bxs-bell'></i>
+                    <span class="text">View Results</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <!-- <li>
+				<a href="#">
+					<i class='bx bxs-cog' ></i>
+					<span class="text">Settings</span>
+				</a>
+			</li> -->
+            <li onclick="handleLogOut()">
+                <a href="#" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form action="#">
+            </form>
+            <p id="nav-name"></p>
+            <a href="#" class="profile">
+                <img src="./img/user.png">
+            </a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right'></i></li>
+                        <li>
+                            <a class="active" href="#">Results</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="select-menu">
+                    <div class="select-btn">
+                        <span class="sBtn-text">Select Election</span>
+                        <i class="bx bx-chevron-down"></i>
+                    </div>
+
+                    <ul class="options" id="election-list-1">
+                    </ul>
+                    <script>
+                        const optionMenu = document.querySelector(".select-menu"),
+                            selectBtn = optionMenu.querySelector(".select-btn"),
+                            options = optionMenu.querySelectorAll(".option"),
+                            sBtn_text = optionMenu.querySelector(".sBtn-text");
+
+                        selectBtn.addEventListener("click", () => optionMenu.classList.toggle("active"));
+
+                        options.forEach(option => {
+                            option.addEventListener("click", () => {
+                                let selectedOption = option.querySelector(".option-text").innerText;
+                                sBtn_text.innerText = selectedOption;
+
+                                optionMenu.classList.remove("active");
+                            });
+                        });
+
+                        function changeText(text) {
+                            sBtn_text.innerText = text;
+                            optionMenu.classList.toggle("active");
+                        }
+                    </script>
+                </div>
+            </div>
+            <ul class="box-info" id="counting-result">
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>0</h3>
+                        <p>Name</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>0</h3>
+                        <p>Name</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>0</h3>
+                        <p>Name</p>
+                    </span>
+                </li>
+            </ul>
+
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>Voters</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Voter</th>
+                                <th>Candidate</th>
+                                <th>Party</th>
+                            </tr>
+                        </thead>
+                        <tbody id="voter-list">
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+
+    <script src="./js/dashboard.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const user = JSON.parse(localStorage.getItem("user"));
+        const admin = JSON.parse(localStorage.getItem("admin"));
+        const token = JSON.parse(localStorage.getItem("auth-token"));
+        let election_id = null;
+        document.getElementById("nav-name").innerText = user.user_name;
+
+        async function getElectionList() {
+            const election = document.getElementById("election-list-1");
+            let html = ``;
+            try {
+                const response = await axios.get('http://localhost:5000/api/v1/admin/all-elections', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': token
+                    },
+                });
+                if (response?.data?.status) {
+                    response.data.elections.forEach(element => {
+                        html += `<li onclick="getResult(this.id)+getCandidate(this.id)" class="option" id="${element._id}">
+                            <span onclick="changeText(this.innerText)" class="option-text">${element.election_name}</span>
+                        </li>`
+                    });
+                    election.innerHTML = html;
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getElectionList();
+
+
+        async function getCandidate(election_id1) {
+            election_id = election_id1;
+            const counting_list = document.getElementById("counting-result");
+            let html = ``;
+            try {
+                const response = await axios.post('http://localhost:5000/api/v1/admin/candidates-details', { election_id: election_id1 }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': token
+                    },
+                });
+                if (response?.data?.status) {
+                    if (response.data.candidate_list.length) {
+                        response.data.candidate_list.forEach(element => {
+                            html += `<li>
+                        <i class='bx bxs-group'></i>
+                        <span class="text">
+                            <h3>${element.voting}</h3>
+                            <p>${element.candidate_name}</p>
+                        </span>
+                    </li>`
+                        });
+                    } else {
+                        html += `<li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>0</h3>
+                        <p>Name</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>0</h3>
+                        <p>Name</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>0</h3>
+                        <p>Name</p>
+                    </span>
+                </li>`
+                    }
+                    counting_list.innerHTML = html;
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+
+        async function getResult(election_id) {
+            const voter_list = document.getElementById("voter-list");
+            let html = ``;
+            try {
+                const response = await axios.post('http://localhost:5000/api/v1/admin/voted-user', { election_id }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'auth-token': token
+                    },
+                });
+                if (response?.data?.status) {
+                    response.data.voted_user_list.forEach(element => {
+                        html += `<tr>
+                                <td>
+                                    <img src="./img/user.png">
+                                    <p>${element.user_name}</p>
+                                </td>
+                                <td>${element.candidate_name}</td>
+                                <td><span class="status completed">${element.party_name}</span></td>
+                            </tr>`
+                    });
+                    voter_list.innerHTML = html;
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    </script>
+</body>
+
+</html>
