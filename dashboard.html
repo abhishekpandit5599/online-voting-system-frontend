@@ -166,6 +166,25 @@
 	<!-- CONTENT -->
 
 
+	<!-- Loader -->
+    <div id="center-loading-animation-div" class="center-loading-animation-div">
+		<div class="overlay"></div>
+		<div class="center-loading-animation">
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+		</div>
+	</div>
+    <!-- Loader -->
+
+
 	<script src="./js/dashboard.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
@@ -175,7 +194,10 @@
 
 		document.getElementById("nav-name").innerText = user.user_name;
 
+		const loader = document.getElementById("center-loading-animation-div");
+		
 		async function getAllStats() {
+			loader.classList.add("active");
 			const total_candidate = document.getElementById("total-candidate");
 			const total_voter = document.getElementById("total-voter");
 			const total_election = document.getElementById("total-election");
@@ -186,6 +208,7 @@
 					total_voter.innerText = response.data.total_user
 					total_election.innerText = response.data.total_election
 				}
+				loader.classList.remove("active");
 			} catch (error) {
 				console.log(error)
 			}

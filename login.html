@@ -130,24 +130,47 @@
     }
   </script>
 
+  <!-- Loader -->
+  <div id="center-loading-animation-div" class="center-loading-animation-div">
+    <div class="overlay"></div>
+    <div class="center-loading-animation">
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+      <div class="wave"></div>
+    </div>
+  </div>
+  <!-- Loader -->
+
 
   <script src="./js/login.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
 
+    const loader = document.getElementById("center-loading-animation-div");
+
     const user = JSON.parse(localStorage.getItem("user"));
     const admin = JSON.parse(localStorage.getItem("admin"));
     const token = JSON.parse(localStorage.getItem("auth-token"));
-    if(!user || !token){
+    if (!user || !token) {
       localStorage.clear();
-    }else{
-      if(admin){
+    } else {
+      if (admin) {
         window.location = "./dashboard.html";
-      }else{
+      } else {
         window.location = "./user.html";
       }
     }
+
+
     const handleLogin = async () => {
+      loader.classList.add("active");
       const adhar_no = document.getElementById("login-adhar").value;
       const password = document.getElementById("login-password").value;
       const popup = document.getElementById("popup-div");
@@ -158,24 +181,27 @@
         if (response?.data?.success) {
           localStorage.setItem("auth-token", JSON.stringify(response.data.authtoken));
           localStorage.setItem("user", JSON.stringify(response.data.user));
-          if(response?.data?.admin){
+          if (response?.data?.admin) {
             localStorage.setItem("admin", true);
             window.location = './dashboard.html';
-          }else{
+          } else {
             localStorage.setItem("admin", false);
             window.location = './user.html';
           }
+          loader.classList.remove("active");
         } else {
+          loader.classList.remove("active");
           popup.innerHTML = `<div class="popup active" id="popup-1">
-      <div class="overlay"></div>
-      <div class="content">
-        <div class="close-btn" onclick="tooglePopup()">&times;</div>
-        <h1>Login Error</h1>
-        <p>${response.data.msg}</p>
-      </div>
-    </div>`
+            <div class="overlay"></div>
+            <div class="content">
+              <div class="close-btn" onclick="tooglePopup()">&times;</div>
+              <h1>Login Error</h1>
+              <p>${response.data.msg}</p>
+              </div>
+              </div>`
         }
       } catch (error) {
+        loader.classList.remove("active");
         popup.innerHTML = `<div class="popup active" id="popup-1">
       <div class="overlay"></div>
       <div class="content">
@@ -189,6 +215,7 @@
     }
 
     const handleRegister = async () => {
+      loader.classList.add("active");
       const adhar_no = document.getElementById("register-adhar").value;
       const user_name = document.getElementById("register-name").value;
       const date_of_birth = document.getElementById("register-dob").value;
@@ -202,6 +229,7 @@
         adhar_no, password, date_of_birth, gender, user_name, phone_no, address, age
       })
       if (response.data.status) {
+        loader.classList.remove("active");
         popup.innerHTML = `<div class="popup active" id="popup-1">
       <div class="overlay"></div>
       <div class="content">
@@ -212,16 +240,17 @@
     </div>`
 
 
-      document.getElementById("register-adhar").value = '';
-      document.getElementById("register-name").value = '';
-      document.getElementById("register-dob").value = '';
-      document.getElementById("register-gender").value = '';
-      document.getElementById("register-password").value = '';
-      document.getElementById("register-phone").value = '';
-      document.getElementById("register-age").value = '';
-      document.getElementById("register-address").value = '';
+        document.getElementById("register-adhar").value = '';
+        document.getElementById("register-name").value = '';
+        document.getElementById("register-dob").value = '';
+        document.getElementById("register-gender").value = '';
+        document.getElementById("register-password").value = '';
+        document.getElementById("register-phone").value = '';
+        document.getElementById("register-age").value = '';
+        document.getElementById("register-address").value = '';
 
       } else {
+        loader.classList.remove("active");
         popup.innerHTML = `<div class="popup active" id="popup-1">
       <div class="overlay"></div>
       <div class="content">

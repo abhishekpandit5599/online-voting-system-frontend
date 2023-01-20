@@ -153,12 +153,31 @@
 
 	</section>
 	<!-- CONTENT -->
-		<div id="popup-div"></div>
-		<script>
-			function tooglePopup() {
-				document.getElementById("popup-1").classList.toggle("active");
-			}
-		</script>
+	<div id="popup-div"></div>
+	<script>
+		function tooglePopup() {
+			document.getElementById("popup-1").classList.toggle("active");
+		}
+	</script>
+
+
+	<!-- Loader -->
+	<div id="center-loading-animation-div" class="center-loading-animation-div">
+		<div class="overlay"></div>
+		<div class="center-loading-animation">
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+		</div>
+	</div>
+	<!-- Loader -->
 
 
 	<script src="./js/dashboard.js"></script>
@@ -168,8 +187,11 @@
 		const admin = JSON.parse(localStorage.getItem("admin"));
 		const token = JSON.parse(localStorage.getItem("auth-token"));
 
+		const loader = document.getElementById("center-loading-animation-div");
+
 		document.getElementById("nav-name").innerText = user.user_name;
 		async function getElectionList() {
+			loader.classList.add("active");
 			const election_list = document.getElementById("election-list");
 			let html = ``;
 			try {
@@ -190,6 +212,7 @@
 			} catch (error) {
 				console.log(error)
 			}
+			loader.classList.remove("active");
 
 		}
 		getElectionList();

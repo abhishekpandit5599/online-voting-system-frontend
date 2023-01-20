@@ -187,6 +187,26 @@
     <!-- CONTENT -->
 
 
+
+    <!-- Loader -->
+    <div id="center-loading-animation-div" class="center-loading-animation-div">
+		<div class="overlay"></div>
+		<div class="center-loading-animation">
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+		</div>
+	</div>
+    <!-- Loader -->
+
+
     <script src="./js/dashboard.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
@@ -195,8 +215,10 @@
         const token = JSON.parse(localStorage.getItem("auth-token"));
         let election_id = null;
         document.getElementById("nav-name").innerText = user.user_name;
+        const loader = document.getElementById("center-loading-animation-div");
 
         async function getElectionList() {
+            loader.classList.add("active");
             const election = document.getElementById("election-list-1");
             let html = ``;
             try {
@@ -217,11 +239,13 @@
             } catch (error) {
                 console.log(error)
             }
+            loader.classList.remove("active");
         }
         getElectionList();
 
 
         async function getCandidate(election_id1) {
+            loader.classList.add("active");
             election_id = election_id1;
             const counting_list = document.getElementById("counting-result");
             let html = ``;
@@ -271,6 +295,7 @@
             } catch (error) {
                 console.log(error)
             }
+            loader.classList.remove("active");
         }
 
 

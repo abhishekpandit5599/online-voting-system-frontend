@@ -175,6 +175,25 @@
 	</section>
 	<!-- CONTENT -->
 
+
+	<!-- Loader -->
+	<div id="center-loading-animation-div" class="center-loading-animation-div">
+		<div class="overlay"></div>
+		<div class="center-loading-animation">
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+			<div class="wave"></div>
+		</div>
+	</div>
+	<!-- Loader -->
+
 	<div id="popup-div"></div>
 	<script>
 		function tooglePopup() {
@@ -193,7 +212,10 @@
 
 		document.getElementById("nav-name").innerText = user.user_name;
 
+		const loader = document.getElementById("center-loading-animation-div");
+
 		async function getElectionList() {
+			loader.classList.add("active");
 			const election = document.getElementById("election-list-1");
 			let html = ``;
 			try {
@@ -214,11 +236,13 @@
 			} catch (error) {
 				console.log(error)
 			}
+			loader.classList.remove("active");
 		}
 		getElectionList();
 
 
 		async function giveVote(candidate_id) {
+			loader.classList.add("active");
 			const popup = document.getElementById("popup-div");
 			let html = ``;
 			try {
@@ -253,9 +277,11 @@
 			} catch (error) {
 				console.log(error)
 			}
+			loader.classList.remove("active");
 		}
 
 		async function getVotedStatus(election_id) {
+			loader.classList.add("active");
 			const counting_list = document.getElementById("counting-result");
 			const candidateData = document.getElementById("candidate-data");
 			const hNone = document.getElementById("h-none");
@@ -297,6 +323,7 @@
 			} catch (error) {
 				console.log(error)
 			}
+			loader.classList.remove("active");
 		}
 
 		async function getCandidate(election_id1) {
