@@ -141,6 +141,7 @@
                     <span class="text">
                         <h3>0</h3>
                         <p>Name</p>
+                        <p>0%</p>
                     </span>
                 </li>
                 <li>
@@ -148,6 +149,7 @@
                     <span class="text">
                         <h3>0</h3>
                         <p>Name</p>
+                        <p>0%</p>
                     </span>
                 </li>
                 <li>
@@ -155,6 +157,7 @@
                     <span class="text">
                         <h3>0</h3>
                         <p>Name</p>
+                        <p>0%</p>
                     </span>
                 </li>
             </ul>
@@ -190,20 +193,20 @@
 
     <!-- Loader -->
     <div id="center-loading-animation-div" class="center-loading-animation-div">
-		<div class="overlay"></div>
-		<div class="center-loading-animation">
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-			<div class="wave"></div>
-		</div>
-	</div>
+        <div class="overlay"></div>
+        <div class="center-loading-animation">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+    </div>
     <!-- Loader -->
 
 
@@ -262,8 +265,9 @@
                             html += `<li>
                         <i class='bx bxs-group'></i>
                         <span class="text">
-                            <h3>${element.voting}</h3>
+                            <h3>${Math.round((element.voting * 100) / response.data.total_voters)}%</h3>
                             <p>${element.candidate_name}</p>
+                            <p>Vote : ${element.voting}</p>
                         </span>
                     </li>`
                         });
@@ -271,22 +275,25 @@
                         html += `<li>
                     <i class='bx bxs-group'></i>
                     <span class="text">
-                        <h3>0</h3>
+                        <h3>0%</h3>
                         <p>Name</p>
+                        <p>Vote : 0</p>
                     </span>
                 </li>
                 <li>
                     <i class='bx bxs-group'></i>
                     <span class="text">
-                        <h3>0</h3>
+                        <h3>0%</h3>
                         <p>Name</p>
+                        <p>Vote : 0</p>
                     </span>
                 </li>
                 <li>
                     <i class='bx bxs-group'></i>
                     <span class="text">
-                        <h3>0</h3>
+                        <h3>0%</h3>
                         <p>Name</p>
+                        <p>Vote : 0</p>
                     </span>
                 </li>`
                     }
