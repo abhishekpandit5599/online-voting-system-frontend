@@ -347,7 +347,9 @@
 					if (response.data.candidate_list.length) {
 						response.data.candidate_list.forEach(element => {
 							html += `<li>
-                        <i class='bx bxs-group'></i>
+								<div class="party-logo">
+									<img src="http://localhost:5000${element.party_logo}" alt="">
+								</div>
                         <span class="text">
                             <h3>${element.party_name}</h3>
                             <p>${element.candidate_name}</p>
@@ -356,7 +358,9 @@
 
 							html1 += `<tr>
 								<td>
-									<img src="./img/user.png">
+									<div class="party-logo-user">
+										<img src="http://localhost:5000${element.party_logo}" alt="">
+									</div>
 									<p>${element.candidate_name}</p>
 								</td>
 								<td>${element.candidate_age}</td>

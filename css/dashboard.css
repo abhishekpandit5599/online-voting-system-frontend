@@ -993,3 +993,25 @@ body {
   .center-loading-animation-div.active{
 	display: block;
   }
+
+  /* Party Logo */
+  .party-logo{
+	height: 70px;
+	width: 70px;
+  }
+  .party-logo-user{
+	height: 70px;
+	width: 70px;
+  }
+  .party-logo img{
+	height: 100%;
+	width: 100%;
+	/* object-fit: cover; */
+	border-radius: 8px;
+  }
+  .party-logo-user img{
+	height: 100% !important;
+	width: 100% !important;
+	/* object-fit: cover; */
+	border-radius: 50%;
+  }

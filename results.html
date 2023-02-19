@@ -263,7 +263,9 @@
                     if (response.data.candidate_list.length) {
                         response.data.candidate_list.forEach(element => {
                             html += `<li>
-                        <i class='bx bxs-group'></i>
+                        <div class="party-logo">
+                            <img src="http://localhost:5000${element.party_logo}" alt="">
+                        </div>
                         <span class="text">
                             <h3>${Math.round((element.voting * 100) / response.data.total_voters)}%</h3>
                             <p>${element.candidate_name}</p>

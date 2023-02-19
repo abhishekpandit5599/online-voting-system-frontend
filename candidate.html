@@ -158,17 +158,18 @@
                                 <label>Candidate Name</label>
                                 <input id="candidate-name" type="text" placeholder="Enter candidate name" required />
                             </div>
+                            <div class="input-box">
+                                <label>Candidate Image / Party Logo</label>
+                                <input id="party-logo" type="file" placeholder="Upload party logo" required />
+                            </div>
 
 
                             <div class="input-box address">
-                                <div class="column">
-
-                                    <input id="party-name" type="text" placeholder="Enter party name" required />
-                                </div>
+                                
                                 <div class="column">
                                     <input id="candidate-age" type="number" placeholder="Enter candidate age"
                                         required />
-                                    <input id="party-logo" type="text" placeholder="Upload party logo" required />
+                                        <input id="party-name" type="text" placeholder="Enter party name" required />
                                 </div>
                             </div>
                             <button type="button" onclick="handleAddCandidate()">Submit</button>
@@ -256,6 +257,9 @@
                 if (response?.data?.status) {
                     response.data.candidate_list.forEach(element => {
                         html += `<li class="completed">
+                            <div class="party-logo-user">
+										<img src="http://localhost:5000${element.party_logo}" alt="">
+									</div>
 							<p>${element.candidate_name}</p>
 						</li>`
                     });
@@ -273,31 +277,32 @@
             const candidate_name = document.getElementById("candidate-name").value;
             const party_name = document.getElementById("party-name").value;
             const candidate_age = document.getElementById("candidate-age").value;
-            const party_logo = document.getElementById("party-logo").value;
-            const data = {
-                election_id,
-                candidate_name,
-                party_name,
-                candidate_age,
-                party_logo
-            }
-            let html = ``;
-            try {
-                const response = await axios.post('http://localhost:5000/api/v1/admin/add-candidate', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'auth-token': token
-                    },
-                });
-                if (response?.data?.status) {
-                    getCandidate(election_id);
-                    document.getElementById("candidate-name").value = ''
-                    document.getElementById("candidate-age").value = ''
-                    document.getElementById("party-name").value = ''
-                    document.getElementById("party-logo").value = ''
+            const party_logo = document.getElementById("party-logo").files[0];
+            
+            if(showCandidate && candidate_name && candidate_name && candidate_age && party_logo){
+                const data = new FormData();
+                data.append("election_id",election_id);
+                data.append("candidate_name",candidate_name);
+                data.append("party_name",party_name);
+                data.append("candidate_age",candidate_age);
+                data.append("party_logo",party_logo);
+                let html = ``;
+                try {
+                    const response = await axios.post('http://localhost:5000/api/v1/admin/add-candidate', data, {
+                        headers: {
+                            'auth-token': token
+                        },
+                    });
+                    if (response?.data?.status) {
+                        getCandidate(election_id);
+                        document.getElementById("candidate-name").value = ''
+                        document.getElementById("candidate-age").value = ''
+                        document.getElementById("party-name").value = ''
+                        document.getElementById("party-logo").value = ''
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
-            } catch (error) {
-                console.log(error)
             }
         }
 
